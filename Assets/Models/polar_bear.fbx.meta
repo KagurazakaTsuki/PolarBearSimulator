@@ -6,6 +6,9 @@ ModelImporter:
   - first:
       74: -4701664323599742320
     second: rig|WalkCycle
+  - first:
+      74: 4651689875899402933
+    second: rig|Stop
   externalObjects: {}
   materials:
     materialImportMode: 2
