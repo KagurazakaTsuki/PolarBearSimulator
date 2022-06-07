@@ -9,6 +9,9 @@ ModelImporter:
   - first:
       74: 4651689875899402933
     second: rig|Stop
+  - first:
+      74: -199738137643714591
+    second: rig|Rest
   externalObjects: {}
   materials:
     materialImportMode: 2
