@@ -231,6 +231,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: polar_bear
       objectReference: {fileID: 0}
+    - target: {fileID: 1555475534390328571, guid: 6a924e868e13546649c33ddfa14afab1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6053f6391bdf844088301fa7c1a7985e, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a924e868e13546649c33ddfa14afab1, type: 3}
