@@ -11,15 +11,22 @@ public class PlayerController : MonoBehaviour
     protected Rigidbody m_Rigidbody;
     protected PlayerInput m_PlayerInput;
     protected Animator m_Animator;
+    protected Camera m_Camera;
 
-    public float m_Speed = 2f;
-    public float m_JumpSpeed = 0.8f;
+
+    public float m_Speed = 4f;
+    public float m_JumpSpeed = 0.4f;
+
+    private Vector3? startingCameraForward = null;
+    private Vector3? startingCameraRight = null;
+
 
     void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         m_PlayerInput = GetComponent<PlayerInput>();
         m_Animator = GetComponent<Animator>();
+        m_Camera = Camera.main;
     }
 
     private Vector2 m_Look;
@@ -51,9 +58,24 @@ public class PlayerController : MonoBehaviour
         m_Fire = m_PlayerInput.actions["Fire"].ReadValue<float>();
         m_Jump = m_PlayerInput.actions["Jump"].ReadValue<float>();
 
+        var cameraForward = m_Camera.transform.forward;
+        // var cameraRight = m_Camera.transform.right;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
+
+
         if (isGrounded)
         {
-            var movement = new Vector3(m_Move.x, 0f, m_Move.y);
+            var movement = m_Move.y * cameraForward
+                // + m_Move.x * cameraRight // side way movement
+                ;
+            movement.Normalize();
+
+            if (Mathf.Approximately(m_Move.y, 1f)) // Only rotating when Forward key down
+            {
+                m_Rigidbody.transform.forward = Vector3.Lerp(transform.forward, cameraForward, 0.03f);
+            }
+
             m_Animator.SetFloat("Forward", movement.magnitude);
 
             if (Mathf.Approximately(m_Jump, 1f)) // Jump key down
@@ -62,7 +84,10 @@ public class PlayerController : MonoBehaviour
                 m_Animator.SetTrigger("Jump");
             }
 
-            m_Rigidbody.MovePosition(transform.position + movement * (Time.deltaTime * m_Speed));
+            var startPosition = transform.position;
+            var endPosition = startPosition + movement * (Time.deltaTime * m_Speed);
+
+            m_Rigidbody.MovePosition(endPosition);
         }
     }
 }
