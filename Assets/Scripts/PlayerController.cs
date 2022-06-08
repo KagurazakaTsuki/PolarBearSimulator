@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Parts of the script contain codes from Unity's 3D Game Kit
-// https://assetstore.unity.com/packages/templates/tutorials/3d-game-kit-115747
-
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
