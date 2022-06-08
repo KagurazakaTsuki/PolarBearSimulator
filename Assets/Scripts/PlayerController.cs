@@ -14,12 +14,9 @@ public class PlayerController : MonoBehaviour
     protected Camera m_Camera;
 
 
-    public float m_Speed = 4f;
+    public float m_Speed = 6f;
     public float m_JumpSpeed = 0.4f;
-
-    private Vector3? startingCameraForward = null;
-    private Vector3? startingCameraRight = null;
-
+    public float m_SprintMultiplier = 2f;
 
     void Awake()
     {
@@ -29,10 +26,12 @@ public class PlayerController : MonoBehaviour
         m_Camera = Camera.main;
     }
 
-    private Vector2 m_Look;
     private Vector2 m_Move;
-    private float m_Fire;
-    private float m_Jump;
+    private bool m_Sprint;
+    private Vector2 m_Look;
+    private bool m_Fire;
+    private bool m_Jump;
+    private bool m_Pause;
 
     protected bool isGrounded = true;
 
@@ -54,9 +53,17 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         m_Move = m_PlayerInput.actions["Move"].ReadValue<Vector2>();
+        m_Sprint = Mathf.Approximately(m_PlayerInput.actions["Sprint"].ReadValue<float>(), 1f);
         m_Look = m_PlayerInput.actions["Look"].ReadValue<Vector2>();
-        m_Fire = m_PlayerInput.actions["Fire"].ReadValue<float>();
-        m_Jump = m_PlayerInput.actions["Jump"].ReadValue<float>();
+        m_Fire = Mathf.Approximately(m_PlayerInput.actions["Fire"].ReadValue<float>(), 1f);
+        m_Jump = Mathf.Approximately(m_PlayerInput.actions["Jump"].ReadValue<float>(), 1f);
+        m_Pause = Mathf.Approximately(m_PlayerInput.actions["Pause"].ReadValue<float>(), 1f);
+        
+        if(m_Fire)
+            Cursor.lockState = CursorLockMode.Locked;
+        
+        if(m_Pause)
+            Cursor.lockState = CursorLockMode.None;
 
         var cameraForward = m_Camera.transform.forward;
         // var cameraRight = m_Camera.transform.right;
@@ -67,27 +74,30 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             var movement = m_Move.y * cameraForward
-                // + m_Move.x * cameraRight // side way movement
+                // + m_Move.x * cameraRight // side way movement, unused
                 ;
             movement.Normalize();
 
-            if (Mathf.Approximately(m_Move.y, 1f)) // Only rotating when Forward key down
+
+            if (Mathf.Approximately(m_Move.y, 1f)) // Only rotate when Forward key is down
             {
                 m_Rigidbody.transform.forward = Vector3.Lerp(transform.forward, cameraForward, 0.03f);
             }
 
+            if (m_Sprint)
+            {
+                movement *= m_SprintMultiplier;
+            }
+
             m_Animator.SetFloat("Forward", movement.magnitude);
 
-            if (Mathf.Approximately(m_Jump, 1f)) // Jump key down
+            if (m_Jump) // Jump key down
             {
                 m_Rigidbody.velocity += Vector3.up * m_JumpSpeed;
                 m_Animator.SetTrigger("Jump");
             }
 
-            var startPosition = transform.position;
-            var endPosition = startPosition + movement * (Time.deltaTime * m_Speed);
-
-            m_Rigidbody.MovePosition(endPosition);
+            m_Rigidbody.MovePosition(transform.position + movement * (Time.deltaTime * m_Speed));
         }
     }
 }
