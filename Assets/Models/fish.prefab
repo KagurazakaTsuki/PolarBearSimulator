@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2165259021564508462}
   - component: {fileID: 4172722297236295140}
   - component: {fileID: 2516564350183634354}
-  - component: {fileID: 2116296997565800412}
+  - component: {fileID: 1009957224258231262}
   m_Layer: 0
   m_Name: fish
   m_TagString: Fish
@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &2165259021564508462
 MeshFilter:
@@ -99,7 +99,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -462981019419857548, guid: 570f0c3456c5b47f583749923c88ca22, type: 3}
---- !u!114 &2116296997565800412
+--- !u!114 &1009957224258231262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,6 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2515401827167546417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a35601f426d74811a28e63d9c646066, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f1ef749e1f4440789b3f03c86d5c214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_FishController: {fileID: 0}
