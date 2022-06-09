@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     protected Camera m_Camera;
 
 
-    public float m_Speed = 6f;
+    public float m_Speed = 4f;
     public float m_JumpSpeed = 0.4f;
     public float m_SprintMultiplier = 2f;
 
@@ -73,16 +73,14 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            var movement = m_Move.y * cameraForward
-                // + m_Move.x * cameraRight // side way movement, unused
-                ;
-            movement.Normalize();
-
-
             if (Mathf.Approximately(m_Move.y, 1f)) // Only rotate when Forward key is down
             {
-                m_Rigidbody.transform.forward = Vector3.Lerp(transform.forward, cameraForward, 0.03f);
+                m_Rigidbody.transform.forward = Vector3.Lerp(transform.forward, cameraForward, 0.1f);
             }
+            
+            // Moving in the direction where the polar bear facing front
+            var movement = m_Move.y * m_Rigidbody.transform.forward;
+            movement.Normalize();
 
             if (m_Sprint)
             {
@@ -90,7 +88,8 @@ public class PlayerController : MonoBehaviour
             }
 
             m_Animator.SetFloat("Forward", movement.magnitude);
-
+            
+            
             if (m_Jump) // Jump key down
             {
                 m_Rigidbody.velocity += Vector3.up * m_JumpSpeed;
