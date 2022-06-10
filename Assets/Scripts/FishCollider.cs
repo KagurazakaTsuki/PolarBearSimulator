@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-public class FishCollider:MonoBehaviour
+public class FishCollider : MonoBehaviour
 {
     public FishController m_FishController;
 
